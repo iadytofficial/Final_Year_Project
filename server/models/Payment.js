@@ -10,6 +10,7 @@ const PaymentSchema = new mongoose.Schema({
   RefundAmount: { type: Number },
   RefundDate: { type: Date },
   RefundReason: { type: String },
+  PayoutID: { type: mongoose.Schema.Types.ObjectId, ref: 'Payouts' },
 }, { versionKey: false });
 
 module.exports = mongoose.model('Payments', PaymentSchema);

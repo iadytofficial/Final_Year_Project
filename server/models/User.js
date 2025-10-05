@@ -13,6 +13,7 @@ const UserSchema = new mongoose.Schema({
   VerificationTokenExpiresAt: { type: Date },
   PasswordResetToken: { type: String },
   PasswordResetExpiresAt: { type: Date },
+  Status: { type: String, enum: ['Active','Suspended'], default: 'Active' },
   FailedLoginAttempts: { type: Number, default: 0 },
   LastLoginAt: { type: Date },
 }, { versionKey: false });

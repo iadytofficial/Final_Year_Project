@@ -9,6 +9,15 @@ const TransportProviderSchema = new mongoose.Schema({
   LicenseCardPic: { type: String },
   PricePerKm: { type: Number, default: 0 },
   AvailabilityCalendar: [{ type: Date }],
+  Location: { address: String, coordinates: { lat: Number, lng: Number } },
+  Geo: { type: { type: String, enum: ['Point'], default: 'Point' }, coordinates: { type: [Number], index: '2dsphere' } },
 }, { versionKey: false });
+
+TransportProviderSchema.pre('save', function(next) {
+  if (this.Location && this.Location.coordinates && typeof this.Location.coordinates.lat === 'number' && typeof this.Location.coordinates.lng === 'number') {
+    this.Geo = { type: 'Point', coordinates: [this.Location.coordinates.lng, this.Location.coordinates.lat] };
+  }
+  next();
+});
 
 module.exports = mongoose.model('TransportProviders', TransportProviderSchema);

@@ -33,6 +33,8 @@ const reviewRoutes = require('./routes/reviews');
 const favoriteRoutes = require('./routes/favorites');
 const publicRoutes = require('./routes/public');
 const aiRoutes = require('./routes/ai');
+const adminRoutes = require('./routes/admin');
+const providerRoutes = require('./routes/providers');
 
 const app = express();
 const server = http.createServer(app);
@@ -92,6 +94,8 @@ app.use('/api/reviews', reviewRoutes);
 app.use('/api/favorites', favoriteRoutes);
 app.use('/api/public', publicRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api', providerRoutes);
 
 // 404 and errors
 app.use(notFoundHandler);
