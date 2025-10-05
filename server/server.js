@@ -24,6 +24,15 @@ const activityRoutes = require('./routes/activities');
 const searchRoutes = require('./routes/search');
 const bookingRoutes = require('./routes/bookings');
 const { scheduleJobs } = require('./services/cron');
+const paymentRoutes = require('./routes/payments');
+const messageRoutes = require('./routes/messages');
+const notificationRoutes = require('./routes/notifications');
+const imageRoutes = require('./routes/images');
+const calendarRoutes = require('./routes/calendar');
+const reviewRoutes = require('./routes/reviews');
+const favoriteRoutes = require('./routes/favorites');
+const publicRoutes = require('./routes/public');
+const aiRoutes = require('./routes/ai');
 
 const app = express();
 const server = http.createServer(app);
@@ -74,6 +83,15 @@ app.use('/api/farmers', farmerRoutes);
 app.use('/api/activities', activityRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/bookings', bookingRoutes);
+app.use('/api/payments', paymentRoutes);
+app.use('/api/messages', messageRoutes);
+app.use('/api/notifications', notificationRoutes);
+app.use('/api/images', imageRoutes);
+app.use('/api/calendar', calendarRoutes);
+app.use('/api/reviews', reviewRoutes);
+app.use('/api/favorites', favoriteRoutes);
+app.use('/api/public', publicRoutes);
+app.use('/api/ai', aiRoutes);
 
 // 404 and errors
 app.use(notFoundHandler);
