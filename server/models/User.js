@@ -10,6 +10,9 @@ const UserSchema = new mongoose.Schema({
   CreatedAt: { type: Date, default: Date.now },
   EmailVerified: { type: Boolean, default: false },
   VerificationToken: { type: String },
+  VerificationTokenExpiresAt: { type: Date },
+  PasswordResetToken: { type: String },
+  PasswordResetExpiresAt: { type: Date },
   FailedLoginAttempts: { type: Number, default: 0 },
   LastLoginAt: { type: Date },
 }, { versionKey: false });

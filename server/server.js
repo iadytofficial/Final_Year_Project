@@ -18,6 +18,7 @@ const { connectMongo } = require('./config/mongo');
 const { errorHandler, notFoundHandler } = require('./middleware/error');
 const healthRoutes = require('./routes/health');
 const authRoutes = require('./routes/auth');
+const { scheduleJobs } = require('./services/cron');
 
 const app = express();
 const server = http.createServer(app);
@@ -70,6 +71,7 @@ app.use(errorHandler);
 const port = process.env.PORT || 4000;
 connectMongo()
   .then(() => {
+    scheduleJobs();
     server.listen(port, () => {
       logger.info({ port }, 'AgroLK server running');
     });

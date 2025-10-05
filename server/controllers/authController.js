@@ -5,7 +5,7 @@ const Sessions = require('../models/Session');
 const { hashPassword, comparePassword } = require('../utils/password');
 const { signAccessToken, signRefreshToken, verifyRefreshToken } = require('../utils/jwt');
 const { sendEmail } = require('../utils/email');
-const { registerSchema, loginSchema } = require('../validators/authValidators');
+const { registerSchema, loginSchema, forgotPasswordSchema, resetPasswordSchema } = require('../validators/authValidators');
 
 async function register(req, res, next) {
   try {
@@ -18,6 +18,7 @@ async function register(req, res, next) {
 
     const hashed = await hashPassword(password);
     const verificationToken = crypto.randomUUID();
+    const verificationExpires = dayjs().add(24, 'hour').toDate();
 
     const user = await Users.create({
       FullName: fullName,
@@ -26,6 +27,7 @@ async function register(req, res, next) {
       PhoneNumber: phoneNumber,
       Role: role,
       VerificationToken: verificationToken,
+      VerificationTokenExpiresAt: verificationExpires,
     });
 
     const verifyUrl = `${process.env.FRONTEND_URL}/verify-email/${verificationToken}`;
@@ -113,7 +115,9 @@ async function verifyEmail(req, res, next) {
     const token = req.params.token;
     if (!token) return res.status(400).json({ code: 'VAL002', message: 'Token required' });
     const user = await Users.findOne({ VerificationToken: token });
-    if (!user) return res.status(400).json({ code: 'AUTH002', message: 'Invalid or expired token' });
+    if (!user || !user.VerificationTokenExpiresAt || dayjs(user.VerificationTokenExpiresAt).isBefore(dayjs())) {
+      return res.status(400).json({ code: 'AUTH002', message: 'Invalid or expired token' });
+    }
 
     user.EmailVerified = true;
     user.VerificationToken = null;
@@ -127,6 +131,45 @@ async function verifyEmail(req, res, next) {
     await Sessions.create({ UserID: user._id, RefreshTokenHash: refreshTokenHash, ExpiresAt: expiresAt });
 
     return res.json({ message: 'Email verified', token: accessToken, refreshToken });
+  } catch (err) { return next(err); }
+}
+
+async function forgotPassword(req, res, next) {
+  try {
+    const { value, error } = forgotPasswordSchema.validate(req.body);
+    if (error) return res.status(400).json({ code: 'VAL001', message: error.message });
+    const { email } = value;
+    const user = await Users.findOne({ Email: email });
+    if (!user) return res.json({ message: 'If the email exists, a reset link was sent.' });
+    const token = crypto.randomUUID();
+    const expires = dayjs().add(1, 'hour').toDate();
+    user.PasswordResetToken = token;
+    user.PasswordResetExpiresAt = expires;
+    await user.save();
+    const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${token}`;
+    await sendEmail({ to: email, subject: 'Reset your AgroLK password', html: `<p>Reset your password by clicking <a href="${resetUrl}">this link</a>. Link expires in 1 hour.</p>` });
+    return res.json({ message: 'If the email exists, a reset link was sent.' });
+  } catch (err) { return next(err); }
+}
+
+async function resetPassword(req, res, next) {
+  try {
+    const token = req.params.token;
+    const { value, error } = resetPasswordSchema.validate(req.body);
+    if (error) return res.status(400).json({ code: 'VAL001', message: error.message });
+    const { newPassword } = value;
+    const user = await Users.findOne({ PasswordResetToken: token });
+    if (!user || !user.PasswordResetExpiresAt || dayjs(user.PasswordResetExpiresAt).isBefore(dayjs())) {
+      return res.status(400).json({ code: 'AUTH002', message: 'Invalid or expired token' });
+    }
+    user.Password = await hashPassword(newPassword);
+    user.PasswordResetToken = null;
+    user.PasswordResetExpiresAt = null;
+    await user.save();
+    // Invalidate all sessions
+    await Sessions.deleteMany({ UserID: user._id });
+    await sendEmail({ to: user.Email, subject: 'Your AgroLK password was changed', html: '<p>Your password has been successfully changed.</p>' });
+    return res.json({ message: 'Password reset successful' });
   } catch (err) { return next(err); }
 }
 
@@ -170,4 +213,4 @@ async function revokeSession(req, res, next) {
   } catch (err) { return next(err); }
 }
 
-module.exports = { register, login, me, verifyEmail, logout, refreshToken, listSessions, revokeSession };
+module.exports = { register, login, me, verifyEmail, logout, refreshToken, listSessions, revokeSession, forgotPassword, resetPassword };
