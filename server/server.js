@@ -35,6 +35,8 @@ const publicRoutes = require('./routes/public');
 const aiRoutes = require('./routes/ai');
 const adminRoutes = require('./routes/admin');
 const providerRoutes = require('./routes/providers');
+const exportRoutes = require('./routes/export');
+const metricsRoutes = require('./routes/metrics');
 
 const app = express();
 const server = http.createServer(app);
@@ -96,6 +98,8 @@ app.use('/api/public', publicRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api', providerRoutes);
+app.use('/api/export', exportRoutes);
+app.use('/api/metrics', metricsRoutes);
 
 // 404 and errors
 app.use(notFoundHandler);
