@@ -20,6 +20,8 @@ const { errorHandler, notFoundHandler } = require('./middleware/error');
 const healthRoutes = require('./routes/health');
 const authRoutes = require('./routes/auth');
 const farmerRoutes = require('./routes/farmers');
+const activityRoutes = require('./routes/activities');
+const searchRoutes = require('./routes/search');
 const { scheduleJobs } = require('./services/cron');
 
 const app = express();
@@ -68,6 +70,8 @@ app.use('/api', apiLimiter);
 app.use('/api/health', healthRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/farmers', farmerRoutes);
+app.use('/api/activities', activityRoutes);
+app.use('/api/search', searchRoutes);
 
 // 404 and errors
 app.use(notFoundHandler);
