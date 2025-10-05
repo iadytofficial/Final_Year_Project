@@ -14,10 +14,12 @@ const compression = require('compression');
 const morgan = require('morgan');
 const pino = require('pino');
 const pinoHttp = require('pino-http');
+const path = require('path');
 const { connectMongo } = require('./config/mongo');
 const { errorHandler, notFoundHandler } = require('./middleware/error');
 const healthRoutes = require('./routes/health');
 const authRoutes = require('./routes/auth');
+const farmerRoutes = require('./routes/farmers');
 const { scheduleJobs } = require('./services/cron');
 
 const app = express();
@@ -44,6 +46,8 @@ app.use(cookieParser());
 app.use(mongoSanitize());
 app.use(hpp());
 app.use(compression());
+// Static hosting for uploads (guarded by file path)
+app.use('/uploads', express.static(path.join(__dirname, '../uploads'), { fallthrough: true }));
 
 // Logging
 if (process.env.NODE_ENV !== 'production') {
@@ -63,6 +67,7 @@ app.use('/api', apiLimiter);
 // Routes
 app.use('/api/health', healthRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/farmers', farmerRoutes);
 
 // 404 and errors
 app.use(notFoundHandler);
