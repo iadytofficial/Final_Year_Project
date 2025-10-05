@@ -6,6 +6,7 @@ const BookingSchema = new mongoose.Schema({
   GuideID: { type: mongoose.Schema.Types.ObjectId, ref: 'TourGuides' },
   TransportProviderID: { type: mongoose.Schema.Types.ObjectId, ref: 'TransportProviders' },
   ActivityDate: { type: Date, required: true },
+  Slot: { type: String, enum: ['Morning','Afternoon','Evening','FullDay'], required: true },
   NumberOfParticipants: { type: Number, required: true },
   TotalCost: { type: Number, required: true },
   Status: { type: String, enum: ['Pending','Confirmed','Completed','Cancelled'], default: 'Pending' },

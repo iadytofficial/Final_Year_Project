@@ -22,6 +22,7 @@ const authRoutes = require('./routes/auth');
 const farmerRoutes = require('./routes/farmers');
 const activityRoutes = require('./routes/activities');
 const searchRoutes = require('./routes/search');
+const bookingRoutes = require('./routes/bookings');
 const { scheduleJobs } = require('./services/cron');
 
 const app = express();
@@ -72,6 +73,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/farmers', farmerRoutes);
 app.use('/api/activities', activityRoutes);
 app.use('/api/search', searchRoutes);
+app.use('/api/bookings', bookingRoutes);
 
 // 404 and errors
 app.use(notFoundHandler);
