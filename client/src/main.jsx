@@ -30,6 +30,7 @@ const ActivityCreation = lazy(()=>import('./pages/farmer/ActivityCreation.jsx'))
 const GuideDashboard = lazy(()=>import('./pages/provider/guide/GuideDashboard.jsx'))
 const GuideRequests = lazy(()=>import('./pages/provider/guide/GuideRequests.jsx'))
 const GuideAvailability = lazy(()=>import('./pages/provider/guide/GuideAvailability.jsx'))
+const GuideEarnings = lazy(()=>import('./pages/provider/guide/EarningsOverview.jsx'))
 const TransportDashboard = lazy(()=>import('./pages/provider/transport/TransportDashboard.jsx'))
 const TransportRequests = lazy(()=>import('./pages/provider/transport/TransportRequests.jsx'))
 const Chat = lazy(()=>import('./pages/messages/Chat.jsx'))
@@ -105,6 +106,7 @@ createRoot(document.getElementById('root')).render(
                 <Route path="guide/dashboard" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><GuideDashboard /></Suspense>} />
                 <Route path="guide/requests" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><GuideRequests /></Suspense>} />
                 <Route path="guide/calendar" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><GuideAvailability /></Suspense>} />
+                <Route path="guide/earnings" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><GuideEarnings /></Suspense>} />
               </Route>
             </Route>
 

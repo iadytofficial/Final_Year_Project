@@ -2,6 +2,7 @@ import { useState } from 'react'
 import ProtectedLayout from '../../../components/common/ProtectedLayout'
 import StepProgressBar from '../../../components/common/StepProgressBar'
 import SelectDateTime from './SelectDateTime'
+import PaymentForm from './PaymentForm'
 
 const steps = ['Date & Time', 'Extras', 'Details', 'Payment', 'Confirmation']
 
@@ -20,7 +21,9 @@ export default function BookingWizard() {
           {current === 0 && (
             <SelectDateTime activityId={data.activityId} value={data.step1} onChange={(v) => setData((d) => ({ ...d, step1: v }))} />
           )}
-          {/* Other steps will go here */}
+          {current === 3 && (
+            <PaymentForm bookingData={{ TotalCost: data.totalCost||0, bookingId: data.bookingId }} onSuccess={()=> setCurrent(4)} />
+          )}
         </div>
         <div className="mt-6 flex justify-between">
           <button onClick={prev} disabled={current===0} className="rounded border px-4 py-2 disabled:opacity-50">Back</button>
