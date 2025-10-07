@@ -19,6 +19,7 @@ const HowItWorks = lazy(()=>import('./pages/public/HowItWorks.jsx'))
 const SearchResults = lazy(()=>import('./pages/public/SearchResults.jsx'))
 const ActivityDetails = lazy(()=>import('./pages/public/ActivityDetails.jsx'))
 const Experiences = lazy(()=>import('./pages/public/Experiences.jsx'))
+const SuccessStories = lazy(()=>import('./pages/public/SuccessStories.jsx'))
 import MyBookings from './pages/tourist/MyBookings.jsx'
 import ReviewForm from './pages/tourist/ReviewForm.jsx'
 import MyReviews from './pages/tourist/MyReviews.jsx'
@@ -33,6 +34,7 @@ const GuideAvailability = lazy(()=>import('./pages/provider/guide/GuideAvailabil
 const GuideEarnings = lazy(()=>import('./pages/provider/guide/EarningsOverview.jsx'))
 const TransportDashboard = lazy(()=>import('./pages/provider/transport/TransportDashboard.jsx'))
 const TransportRequests = lazy(()=>import('./pages/provider/transport/TransportRequests.jsx'))
+const TransportEarnings = lazy(()=>import('./pages/provider/transport/EarningsOverview.jsx'))
 const Chat = lazy(()=>import('./pages/messages/Chat.jsx'))
 const NotificationsCenter = lazy(()=>import('./pages/notifications/NotificationsCenter.jsx'))
 const Favorites = lazy(()=>import('./pages/favorites/Favorites.jsx'))
@@ -71,6 +73,7 @@ createRoot(document.getElementById('root')).render(
             <Route path="experiences" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><Experiences /></Suspense>} />
             <Route path="experience/:id" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><ActivityDetails /></Suspense>} />
             <Route path="destinations" element={<PublicStats />} />
+            <Route path="success-stories" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><SuccessStories /></Suspense>} />
             <Route path="about" element={<About />} />
             <Route path="terms" element={<Terms />} />
             <Route path="privacy" element={<Privacy />} />
@@ -115,6 +118,7 @@ createRoot(document.getElementById('root')).render(
               <Route element={<ProtectedLayout />}>
                 <Route path="transport/dashboard" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><TransportDashboard /></Suspense>} />
                 <Route path="transport/requests" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><TransportRequests /></Suspense>} />
+                <Route path="transport/earnings" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><TransportEarnings /></Suspense>} />
               </Route>
             </Route>
 

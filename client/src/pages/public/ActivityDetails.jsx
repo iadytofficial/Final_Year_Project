@@ -5,6 +5,7 @@ import RatingStars from '../../components/common/RatingStars'
 import api from '../../services/api'
 import { useAuth } from '../../contexts/AuthContext'
 import RatingBreakdown from '../../components/common/RatingBreakdown'
+import ShareButtons from '../../components/common/ShareButtons'
 
 export default function ActivityDetails() {
   const { id } = useParams()
@@ -47,11 +48,14 @@ export default function ActivityDetails() {
               <span className="text-xl font-semibold text-brand">LKR {activity.PricePerPerson?.toLocaleString?.() || activity.PricePerPerson}</span>
               <Link to="/bookings/new" className="rounded bg-brand px-4 py-2 text-white">Book now</Link>
             </div>
-            {user && (
+            <div className="mt-3 flex items-center justify-between">
+              <ShareButtons text={`Check out ${activity.CustomTitle} on AgroLK`} />
+              {user && (
               <button onClick={toggleFavorite} className="mt-3 rounded border px-3 py-1 text-sm">
                 {fav ? '★ Remove Favorite' : '☆ Add to Favorites'}
               </button>
-            )}
+              )}
+            </div>
           </div>
         </div>
         <RatingBreakdown distribution={activity.RatingDistribution||{}} subratings={activity.SubRatings||{}} />
