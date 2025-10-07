@@ -33,6 +33,13 @@ import NotificationsCenter from './pages/notifications/NotificationsCenter.jsx'
 import Favorites from './pages/favorites/Favorites.jsx'
 import AIAssistant from './pages/ai/AIAssistant.jsx'
 import AdminUsers from './pages/admin/Users.jsx'
+import Verifications from './pages/admin/Verifications.jsx'
+import ReviewsModeration from './pages/admin/ReviewsModeration.jsx'
+import FeedbackManagement from './pages/admin/FeedbackManagement.jsx'
+import Payouts from './pages/admin/Payouts.jsx'
+import Reports from './pages/admin/Reports.jsx'
+import PublicStats from './pages/public/PublicStats.jsx'
+import ActivityEdit from './pages/farmer/ActivityEdit.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -50,6 +57,7 @@ createRoot(document.getElementById('root')).render(
             <Route path="how-it-works" element={<HowItWorks />} />
             <Route path="search" element={<SearchResults />} />
             <Route path="experience/:id" element={<ActivityDetails />} />
+            <Route path="destinations" element={<PublicStats />} />
 
             {/* Tourist */}
             <Route element={<ProtectedRoute roles={["Tourist"]} />}> 
@@ -67,6 +75,7 @@ createRoot(document.getElementById('root')).render(
                 <Route path="farmer/farm" element={<FarmRegistration />} />
                 <Route path="farmer/activities" element={<ManageActivities />} />
                 <Route path="farmer/activities/create" element={<ActivityCreation />} />
+                <Route path="farmer/activities/:id/edit" element={<ActivityEdit />} />
               </Route>
             </Route>
 
@@ -92,6 +101,11 @@ createRoot(document.getElementById('root')).render(
               <Route element={<ProtectedLayout />}>
                 <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="/admin/users" element={<AdminUsers />} />
+                <Route path="/admin/verifications" element={<Verifications />} />
+                <Route path="/admin/reviews" element={<ReviewsModeration />} />
+                <Route path="/admin/feedback" element={<FeedbackManagement />} />
+                <Route path="/admin/payouts" element={<Payouts />} />
+                <Route path="/admin/reports" element={<Reports />} />
               </Route>
             </Route>
             {/* Shared */}
