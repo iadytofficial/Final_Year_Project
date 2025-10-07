@@ -22,6 +22,7 @@ const Experiences = lazy(()=>import('./pages/public/Experiences.jsx'))
 import MyBookings from './pages/tourist/MyBookings.jsx'
 const FarmerDashboard = lazy(()=>import('./pages/farmer/FarmerDashboard.jsx'))
 const FarmRegistration = lazy(()=>import('./pages/farmer/FarmRegistration.jsx'))
+const FarmManage = lazy(()=>import('./pages/farmer/FarmManage.jsx'))
 const ManageActivities = lazy(()=>import('./pages/farmer/ManageActivities.jsx'))
 const ActivityCreation = lazy(()=>import('./pages/farmer/ActivityCreation.jsx'))
 const GuideDashboard = lazy(()=>import('./pages/provider/guide/GuideDashboard.jsx'))
@@ -41,6 +42,7 @@ const Payouts = lazy(()=>import('./pages/admin/Payouts.jsx'))
 const Reports = lazy(()=>import('./pages/admin/Reports.jsx'))
 const PublicStats = lazy(()=>import('./pages/public/PublicStats.jsx'))
 const ActivityEdit = lazy(()=>import('./pages/farmer/ActivityEdit.jsx'))
+const CategoryTagManager = lazy(()=>import('./pages/admin/CategoryTagManager.jsx'))
 import About from './pages/static/About.jsx'
 import Terms from './pages/static/Terms.jsx'
 import Privacy from './pages/static/Privacy.jsx'
@@ -85,6 +87,7 @@ createRoot(document.getElementById('root')).render(
               <Route element={<ProtectedLayout />}>
                 <Route path="farmer/dashboard" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><FarmerDashboard /></Suspense>} />
                 <Route path="farmer/farm" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><FarmRegistration /></Suspense>} />
+                <Route path="farmer/farm/manage" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><FarmManage /></Suspense>} />
                 <Route path="farmer/activities" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><ManageActivities /></Suspense>} />
                 <Route path="farmer/activities/create" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><ActivityCreation /></Suspense>} />
                 <Route path="farmer/activities/:id/edit" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><ActivityEdit /></Suspense>} />
@@ -118,6 +121,7 @@ createRoot(document.getElementById('root')).render(
                 <Route path="/admin/feedback" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><FeedbackManagement /></Suspense>} />
                 <Route path="/admin/payouts" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><Payouts /></Suspense>} />
                 <Route path="/admin/reports" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><Reports /></Suspense>} />
+                <Route path="/admin/categories" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><CategoryTagManager /></Suspense>} />
               </Route>
             </Route>
             {/* Shared */}

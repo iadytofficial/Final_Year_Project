@@ -27,6 +27,18 @@ export default function Chat() {
     setText('')
   }
 
+  useEffect(()=>{
+    const s = getSocket()
+    if (!bookingId) return
+    const typingPayload = { room: `booking:${bookingId}` }
+    const onTyping = ()=>{}
+    s.on('typing', onTyping)
+    const onInput = ()=> s.emit('typing', typingPayload)
+    const inputEl = document.getElementById('chat-input')
+    inputEl?.addEventListener('input', onInput)
+    return ()=>{ s.off('typing', onTyping); inputEl?.removeEventListener('input', onInput) }
+  },[bookingId])
+
   return (
     <ProtectedLayout>
       <div className="mx-auto max-w-3xl px-4 py-8">
@@ -42,7 +54,7 @@ export default function Chat() {
           <div ref={endRef} />
         </div>
         <div className="mt-3 flex gap-2">
-          <input value={text} onChange={(e)=>setText(e.target.value)} placeholder="Type a message" className="w-full rounded border px-3 py-2" />
+          <input id="chat-input" value={text} onChange={(e)=>setText(e.target.value)} placeholder="Type a message" className="w-full rounded border px-3 py-2" />
           <button onClick={send} className="rounded bg-brand px-4 py-2 text-white">Send</button>
         </div>
       </div>
