@@ -20,6 +20,8 @@ const SearchResults = lazy(()=>import('./pages/public/SearchResults.jsx'))
 const ActivityDetails = lazy(()=>import('./pages/public/ActivityDetails.jsx'))
 const Experiences = lazy(()=>import('./pages/public/Experiences.jsx'))
 import MyBookings from './pages/tourist/MyBookings.jsx'
+import ReviewForm from './pages/tourist/ReviewForm.jsx'
+import MyReviews from './pages/tourist/MyReviews.jsx'
 const FarmerDashboard = lazy(()=>import('./pages/farmer/FarmerDashboard.jsx'))
 const FarmRegistration = lazy(()=>import('./pages/farmer/FarmRegistration.jsx'))
 const FarmManage = lazy(()=>import('./pages/farmer/FarmManage.jsx'))
@@ -79,6 +81,8 @@ createRoot(document.getElementById('root')).render(
                 <Route path="dashboard" element={<div className="p-6">Tourist Dashboard</div>} />
                 <Route path="bookings/new" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><BookingWizard /></Suspense>} />
                 <Route path="bookings" element={<MyBookings />} />
+                <Route path="reviews" element={<MyReviews />} />
+                <Route path="reviews/new" element={<ReviewForm />} />
               </Route>
             </Route>
 

@@ -4,6 +4,7 @@ import PublicLayout from './PublicLayout'
 import RatingStars from '../../components/common/RatingStars'
 import api from '../../services/api'
 import { useAuth } from '../../contexts/AuthContext'
+import RatingBreakdown from '../../components/common/RatingBreakdown'
 
 export default function ActivityDetails() {
   const { id } = useParams()
@@ -53,6 +54,7 @@ export default function ActivityDetails() {
             )}
           </div>
         </div>
+        <RatingBreakdown distribution={activity.RatingDistribution||{}} subratings={activity.SubRatings||{}} />
       </div>
     </PublicLayout>
   )
