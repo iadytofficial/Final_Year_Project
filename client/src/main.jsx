@@ -19,6 +19,10 @@ import HowItWorks from './pages/public/HowItWorks.jsx'
 import SearchResults from './pages/public/SearchResults.jsx'
 import ActivityDetails from './pages/public/ActivityDetails.jsx'
 import MyBookings from './pages/tourist/MyBookings.jsx'
+import FarmerDashboard from './pages/farmer/FarmerDashboard.jsx'
+import FarmRegistration from './pages/farmer/FarmRegistration.jsx'
+import ManageActivities from './pages/farmer/ManageActivities.jsx'
+import ActivityCreation from './pages/farmer/ActivityCreation.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -49,7 +53,10 @@ createRoot(document.getElementById('root')).render(
             {/* Farmer */}
             <Route element={<ProtectedRoute roles={["Farmer"]} />}> 
               <Route element={<ProtectedLayout />}>
-                <Route path="farmer/dashboard" element={<div className="p-6">Farmer Dashboard</div>} />
+                <Route path="farmer/dashboard" element={<FarmerDashboard />} />
+                <Route path="farmer/farm" element={<FarmRegistration />} />
+                <Route path="farmer/activities" element={<ManageActivities />} />
+                <Route path="farmer/activities/create" element={<ActivityCreation />} />
               </Route>
             </Route>
 
