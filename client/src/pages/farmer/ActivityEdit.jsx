@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom'
 import ProtectedLayout from '../../components/common/ProtectedLayout'
 import api from '../../services/api'
 import { toast } from 'react-toastify'
+import AvailabilityEditor from '../../components/availability/AvailabilityEditor'
+import ImagesManager from '../images/ImagesManager'
 
 export default function ActivityEdit() {
   const { id } = useParams()
@@ -28,6 +30,14 @@ export default function ActivityEdit() {
             <input value={title} onChange={(e)=>setTitle(e.target.value)} className="w-full rounded border px-3 py-2" />
             <input type="number" step="0.01" value={price} onChange={(e)=>setPrice(e.target.value)} className="w-full rounded border px-3 py-2" />
             <button onClick={save} className="rounded bg-brand px-4 py-2 text-white">Save</button>
+            <div className="pt-4">
+              <h2 className="text-lg font-semibold mb-2">Availability</h2>
+              <AvailabilityEditor entityType="Activity" entityId={id} />
+            </div>
+            <div className="pt-4">
+              <h2 className="text-lg font-semibold mb-2">Images</h2>
+              <ImagesManager entityType="Activity" entityId={id} />
+            </div>
           </div>
         )}
       </div>

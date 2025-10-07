@@ -1,4 +1,4 @@
-import { StrictMode } from 'react'
+import { StrictMode, Suspense, lazy } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './index.css'
@@ -12,34 +12,35 @@ import ForgotPassword from './pages/auth/ForgotPassword.jsx'
 import ResetPassword from './pages/auth/ResetPassword.jsx'
 import EmailVerification from './pages/auth/EmailVerification.jsx'
 import ProtectedLayout from './components/common/ProtectedLayout.jsx'
-import AdminDashboard from './pages/admin/AdminDashboard.jsx'
-import BookingWizard from './pages/tourist/BookingFlow/BookingWizard.jsx'
+const AdminDashboard = lazy(()=>import('./pages/admin/AdminDashboard.jsx'))
+const BookingWizard = lazy(()=>import('./pages/tourist/BookingFlow/BookingWizard.jsx'))
 import { HelmetProvider } from 'react-helmet-async'
-import HowItWorks from './pages/public/HowItWorks.jsx'
-import SearchResults from './pages/public/SearchResults.jsx'
-import ActivityDetails from './pages/public/ActivityDetails.jsx'
+const HowItWorks = lazy(()=>import('./pages/public/HowItWorks.jsx'))
+const SearchResults = lazy(()=>import('./pages/public/SearchResults.jsx'))
+const ActivityDetails = lazy(()=>import('./pages/public/ActivityDetails.jsx'))
+const Experiences = lazy(()=>import('./pages/public/Experiences.jsx'))
 import MyBookings from './pages/tourist/MyBookings.jsx'
-import FarmerDashboard from './pages/farmer/FarmerDashboard.jsx'
-import FarmRegistration from './pages/farmer/FarmRegistration.jsx'
-import ManageActivities from './pages/farmer/ManageActivities.jsx'
-import ActivityCreation from './pages/farmer/ActivityCreation.jsx'
-import GuideDashboard from './pages/provider/guide/GuideDashboard.jsx'
-import GuideRequests from './pages/provider/guide/GuideRequests.jsx'
-import GuideAvailability from './pages/provider/guide/GuideAvailability.jsx'
-import TransportDashboard from './pages/provider/transport/TransportDashboard.jsx'
-import TransportRequests from './pages/provider/transport/TransportRequests.jsx'
-import Chat from './pages/messages/Chat.jsx'
-import NotificationsCenter from './pages/notifications/NotificationsCenter.jsx'
-import Favorites from './pages/favorites/Favorites.jsx'
-import AIAssistant from './pages/ai/AIAssistant.jsx'
-import AdminUsers from './pages/admin/Users.jsx'
-import Verifications from './pages/admin/Verifications.jsx'
-import ReviewsModeration from './pages/admin/ReviewsModeration.jsx'
-import FeedbackManagement from './pages/admin/FeedbackManagement.jsx'
-import Payouts from './pages/admin/Payouts.jsx'
-import Reports from './pages/admin/Reports.jsx'
-import PublicStats from './pages/public/PublicStats.jsx'
-import ActivityEdit from './pages/farmer/ActivityEdit.jsx'
+const FarmerDashboard = lazy(()=>import('./pages/farmer/FarmerDashboard.jsx'))
+const FarmRegistration = lazy(()=>import('./pages/farmer/FarmRegistration.jsx'))
+const ManageActivities = lazy(()=>import('./pages/farmer/ManageActivities.jsx'))
+const ActivityCreation = lazy(()=>import('./pages/farmer/ActivityCreation.jsx'))
+const GuideDashboard = lazy(()=>import('./pages/provider/guide/GuideDashboard.jsx'))
+const GuideRequests = lazy(()=>import('./pages/provider/guide/GuideRequests.jsx'))
+const GuideAvailability = lazy(()=>import('./pages/provider/guide/GuideAvailability.jsx'))
+const TransportDashboard = lazy(()=>import('./pages/provider/transport/TransportDashboard.jsx'))
+const TransportRequests = lazy(()=>import('./pages/provider/transport/TransportRequests.jsx'))
+const Chat = lazy(()=>import('./pages/messages/Chat.jsx'))
+const NotificationsCenter = lazy(()=>import('./pages/notifications/NotificationsCenter.jsx'))
+const Favorites = lazy(()=>import('./pages/favorites/Favorites.jsx'))
+const AIAssistant = lazy(()=>import('./pages/ai/AIAssistant.jsx'))
+const AdminUsers = lazy(()=>import('./pages/admin/Users.jsx'))
+const Verifications = lazy(()=>import('./pages/admin/Verifications.jsx'))
+const ReviewsModeration = lazy(()=>import('./pages/admin/ReviewsModeration.jsx'))
+const FeedbackManagement = lazy(()=>import('./pages/admin/FeedbackManagement.jsx'))
+const Payouts = lazy(()=>import('./pages/admin/Payouts.jsx'))
+const Reports = lazy(()=>import('./pages/admin/Reports.jsx'))
+const PublicStats = lazy(()=>import('./pages/public/PublicStats.jsx'))
+const ActivityEdit = lazy(()=>import('./pages/farmer/ActivityEdit.jsx'))
 import About from './pages/static/About.jsx'
 import Terms from './pages/static/Terms.jsx'
 import Privacy from './pages/static/Privacy.jsx'
@@ -59,9 +60,10 @@ createRoot(document.getElementById('root')).render(
             <Route path="verify-email/:token" element={<EmailVerification />} />
             <Route path="forgot-password" element={<ForgotPassword />} />
             <Route path="reset-password/:token" element={<ResetPassword />} />
-            <Route path="how-it-works" element={<HowItWorks />} />
-            <Route path="search" element={<SearchResults />} />
-            <Route path="experience/:id" element={<ActivityDetails />} />
+            <Route path="how-it-works" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><HowItWorks /></Suspense>} />
+            <Route path="search" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><SearchResults /></Suspense>} />
+            <Route path="experiences" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><Experiences /></Suspense>} />
+            <Route path="experience/:id" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><ActivityDetails /></Suspense>} />
             <Route path="destinations" element={<PublicStats />} />
             <Route path="about" element={<About />} />
             <Route path="terms" element={<Terms />} />
@@ -73,7 +75,7 @@ createRoot(document.getElementById('root')).render(
             <Route element={<ProtectedRoute roles={["Tourist"]} />}> 
               <Route element={<ProtectedLayout />}>
                 <Route path="dashboard" element={<div className="p-6">Tourist Dashboard</div>} />
-                <Route path="bookings/new" element={<BookingWizard />} />
+                <Route path="bookings/new" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><BookingWizard /></Suspense>} />
                 <Route path="bookings" element={<MyBookings />} />
               </Route>
             </Route>
@@ -81,50 +83,50 @@ createRoot(document.getElementById('root')).render(
             {/* Farmer */}
             <Route element={<ProtectedRoute roles={["Farmer"]} />}> 
               <Route element={<ProtectedLayout />}>
-                <Route path="farmer/dashboard" element={<FarmerDashboard />} />
-                <Route path="farmer/farm" element={<FarmRegistration />} />
-                <Route path="farmer/activities" element={<ManageActivities />} />
-                <Route path="farmer/activities/create" element={<ActivityCreation />} />
-                <Route path="farmer/activities/:id/edit" element={<ActivityEdit />} />
+                <Route path="farmer/dashboard" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><FarmerDashboard /></Suspense>} />
+                <Route path="farmer/farm" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><FarmRegistration /></Suspense>} />
+                <Route path="farmer/activities" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><ManageActivities /></Suspense>} />
+                <Route path="farmer/activities/create" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><ActivityCreation /></Suspense>} />
+                <Route path="farmer/activities/:id/edit" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><ActivityEdit /></Suspense>} />
               </Route>
             </Route>
 
             {/* Provider - Guide */}
             <Route element={<ProtectedRoute roles={["TourGuide"]} />}> 
               <Route element={<ProtectedLayout />}>
-                <Route path="guide/dashboard" element={<GuideDashboard />} />
-                <Route path="guide/requests" element={<GuideRequests />} />
-                <Route path="guide/calendar" element={<GuideAvailability />} />
+                <Route path="guide/dashboard" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><GuideDashboard /></Suspense>} />
+                <Route path="guide/requests" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><GuideRequests /></Suspense>} />
+                <Route path="guide/calendar" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><GuideAvailability /></Suspense>} />
               </Route>
             </Route>
 
             {/* Provider - Transport */}
             <Route element={<ProtectedRoute roles={["TransportProvider"]} />}> 
               <Route element={<ProtectedLayout />}>
-                <Route path="transport/dashboard" element={<TransportDashboard />} />
-                <Route path="transport/requests" element={<TransportRequests />} />
+                <Route path="transport/dashboard" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><TransportDashboard /></Suspense>} />
+                <Route path="transport/requests" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><TransportRequests /></Suspense>} />
               </Route>
             </Route>
 
             {/* Admin */}
             <Route element={<ProtectedRoute roles={["Administrator"]} />}> 
               <Route element={<ProtectedLayout />}>
-                <Route path="/admin" element={<AdminDashboard />} />
-                <Route path="/admin/users" element={<AdminUsers />} />
-                <Route path="/admin/verifications" element={<Verifications />} />
-                <Route path="/admin/reviews" element={<ReviewsModeration />} />
-                <Route path="/admin/feedback" element={<FeedbackManagement />} />
-                <Route path="/admin/payouts" element={<Payouts />} />
-                <Route path="/admin/reports" element={<Reports />} />
+                <Route path="/admin" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><AdminDashboard /></Suspense>} />
+                <Route path="/admin/users" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><AdminUsers /></Suspense>} />
+                <Route path="/admin/verifications" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><Verifications /></Suspense>} />
+                <Route path="/admin/reviews" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><ReviewsModeration /></Suspense>} />
+                <Route path="/admin/feedback" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><FeedbackManagement /></Suspense>} />
+                <Route path="/admin/payouts" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><Payouts /></Suspense>} />
+                <Route path="/admin/reports" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><Reports /></Suspense>} />
               </Route>
             </Route>
             {/* Shared */}
             <Route element={<ProtectedRoute roles={["Tourist","Farmer","TourGuide","TransportProvider","Administrator"]} />}> 
               <Route element={<ProtectedLayout />}>
-                <Route path="messages" element={<Chat />} />
-                <Route path="notifications" element={<NotificationsCenter />} />
-                <Route path="favorites" element={<Favorites />} />
-                <Route path="ai" element={<AIAssistant />} />
+                <Route path="messages" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><Chat /></Suspense>} />
+                <Route path="notifications" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><NotificationsCenter /></Suspense>} />
+                <Route path="favorites" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><Favorites /></Suspense>} />
+                <Route path="ai" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><AIAssistant /></Suspense>} />
               </Route>
             </Route>
           </Route>
