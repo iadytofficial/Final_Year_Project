@@ -1,0 +1,2 @@
+import PublicLayout from '../public/PublicLayout'
+export default function Privacy(){return(<PublicLayout><div className="mx-auto max-w-5xl px-4 py-8"><h1 className="text-2xl font-semibold mb-4">Privacy Policy</h1><p>We respect your privacy and protect your data.</p></div></PublicLayout>)}

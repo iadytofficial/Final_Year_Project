@@ -40,6 +40,11 @@ import Payouts from './pages/admin/Payouts.jsx'
 import Reports from './pages/admin/Reports.jsx'
 import PublicStats from './pages/public/PublicStats.jsx'
 import ActivityEdit from './pages/farmer/ActivityEdit.jsx'
+import About from './pages/static/About.jsx'
+import Terms from './pages/static/Terms.jsx'
+import Privacy from './pages/static/Privacy.jsx'
+import FAQ from './pages/static/FAQ.jsx'
+import Contact from './pages/static/Contact.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -58,6 +63,11 @@ createRoot(document.getElementById('root')).render(
             <Route path="search" element={<SearchResults />} />
             <Route path="experience/:id" element={<ActivityDetails />} />
             <Route path="destinations" element={<PublicStats />} />
+            <Route path="about" element={<About />} />
+            <Route path="terms" element={<Terms />} />
+            <Route path="privacy" element={<Privacy />} />
+            <Route path="faq" element={<FAQ />} />
+            <Route path="contact" element={<Contact />} />
 
             {/* Tourist */}
             <Route element={<ProtectedRoute roles={["Tourist"]} />}> 

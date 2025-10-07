@@ -1,0 +1,2 @@
+import PublicLayout from '../public/PublicLayout'
+export default function Terms(){return(<PublicLayout><div className="mx-auto max-w-5xl px-4 py-8"><h1 className="text-2xl font-semibold mb-4">Terms & Conditions</h1><p>By using AgroLK, you agree to our terms and conditions.</p></div></PublicLayout>)}

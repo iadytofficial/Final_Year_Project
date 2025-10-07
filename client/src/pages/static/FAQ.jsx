@@ -1,0 +1,2 @@
+import PublicLayout from '../public/PublicLayout'
+export default function FAQ(){return(<PublicLayout><div className="mx-auto max-w-5xl px-4 py-8"><h1 className="text-2xl font-semibold mb-4">FAQ</h1><p>Answers to common questions.</p></div></PublicLayout>)}
