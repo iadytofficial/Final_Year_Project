@@ -31,7 +31,10 @@ export default function Chat() {
     const s = getSocket()
     if (!bookingId) return
     const typingPayload = { room: `booking:${bookingId}` }
-    const onTyping = ()=>{}
+    const onTyping = ()=>{
+      const indicator = document.getElementById('typing-indicator')
+      if (indicator){ indicator.textContent = 'Typing…'; setTimeout(()=>{ indicator.textContent=''; }, 1500) }
+    }
     s.on('typing', onTyping)
     const onInput = ()=> s.emit('typing', typingPayload)
     const inputEl = document.getElementById('chat-input')
@@ -53,6 +56,7 @@ export default function Chat() {
           ))}
           <div ref={endRef} />
         </div>
+        <div id="typing-indicator" className="mt-1 h-5 text-xs text-gray-500" />
         <div className="mt-3 flex gap-2">
           <input id="chat-input" value={text} onChange={(e)=>setText(e.target.value)} placeholder="Type a message" className="w-full rounded border px-3 py-2" />
           <button onClick={send} className="rounded bg-brand px-4 py-2 text-white">Send</button>
