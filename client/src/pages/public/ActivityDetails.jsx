@@ -1,0 +1,39 @@
+import { useEffect, useState } from 'react'
+import { useParams, Link } from 'react-router-dom'
+import api from '../../services/api'
+import PublicLayout from './PublicLayout'
+import RatingStars from '../../components/common/RatingStars'
+
+export default function ActivityDetails() {
+  const { id } = useParams()
+  const [activity, setActivity] = useState(null)
+
+  useEffect(() => {
+    async function run() {
+      const { data } = await api.get(`/activities/${id}`)
+      setActivity(data)
+    }
+    run()
+  }, [id])
+
+  if (!activity) return <PublicLayout><div className="p-6">Loading...</div></PublicLayout>
+
+  return (
+    <PublicLayout>
+      <div className="mx-auto max-w-5xl px-4 py-8">
+        <div className="grid gap-6 md:grid-cols-2">
+          <img src={activity.Images?.[0]} alt={activity.CustomTitle} className="w-full rounded object-cover" />
+          <div>
+            <h1 className="text-2xl font-semibold">{activity.CustomTitle}</h1>
+            <div className="mt-2"><RatingStars value={activity.Rating || 0} /></div>
+            <p className="mt-4 text-gray-700 whitespace-pre-line">{activity.CustomDescription}</p>
+            <div className="mt-6 flex items-center justify-between">
+              <span className="text-xl font-semibold text-brand">LKR {activity.PricePerPerson?.toLocaleString?.() || activity.PricePerPerson}</span>
+              <Link to="/bookings/new" className="rounded bg-brand px-4 py-2 text-white">Book now</Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </PublicLayout>
+  )
+}

@@ -1,0 +1,82 @@
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import './index.css'
+import App from './App.jsx'
+import { AuthProvider } from './contexts/AuthContext.jsx'
+import ProtectedRoute from './components/auth/ProtectedRoute.jsx'
+import Home from './pages/public/Home.jsx'
+import Login from './pages/auth/Login.jsx'
+import Register from './pages/auth/Register.jsx'
+import ForgotPassword from './pages/auth/ForgotPassword.jsx'
+import ResetPassword from './pages/auth/ResetPassword.jsx'
+import EmailVerification from './pages/auth/EmailVerification.jsx'
+import ProtectedLayout from './components/common/ProtectedLayout.jsx'
+import AdminDashboard from './pages/admin/AdminDashboard.jsx'
+import BookingWizard from './pages/tourist/BookingFlow/BookingWizard.jsx'
+import { HelmetProvider } from 'react-helmet-async'
+import HowItWorks from './pages/public/HowItWorks.jsx'
+import SearchResults from './pages/public/SearchResults.jsx'
+import ActivityDetails from './pages/public/ActivityDetails.jsx'
+import MyBookings from './pages/tourist/MyBookings.jsx'
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <HelmetProvider>
+      <BrowserRouter>
+        <AuthProvider>
+          <Routes>
+          <Route path="/" element={<App />}> 
+            <Route index element={<Home />} />
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
+            <Route path="verify-email/:token" element={<EmailVerification />} />
+            <Route path="forgot-password" element={<ForgotPassword />} />
+            <Route path="reset-password/:token" element={<ResetPassword />} />
+            <Route path="how-it-works" element={<HowItWorks />} />
+            <Route path="search" element={<SearchResults />} />
+            <Route path="experience/:id" element={<ActivityDetails />} />
+
+            {/* Tourist */}
+            <Route element={<ProtectedRoute roles={["Tourist"]} />}> 
+              <Route element={<ProtectedLayout />}>
+                <Route path="dashboard" element={<div className="p-6">Tourist Dashboard</div>} />
+                <Route path="bookings/new" element={<BookingWizard />} />
+                <Route path="bookings" element={<MyBookings />} />
+              </Route>
+            </Route>
+
+            {/* Farmer */}
+            <Route element={<ProtectedRoute roles={["Farmer"]} />}> 
+              <Route element={<ProtectedLayout />}>
+                <Route path="farmer/dashboard" element={<div className="p-6">Farmer Dashboard</div>} />
+              </Route>
+            </Route>
+
+            {/* Provider - Guide */}
+            <Route element={<ProtectedRoute roles={["TourGuide"]} />}> 
+              <Route element={<ProtectedLayout />}>
+                <Route path="guide/dashboard" element={<div className="p-6">Guide Dashboard</div>} />
+              </Route>
+            </Route>
+
+            {/* Provider - Transport */}
+            <Route element={<ProtectedRoute roles={["TransportProvider"]} />}> 
+              <Route element={<ProtectedLayout />}>
+                <Route path="transport/dashboard" element={<div className="p-6">Transport Dashboard</div>} />
+              </Route>
+            </Route>
+
+            {/* Admin */}
+            <Route element={<ProtectedRoute roles={["Administrator"]} />}> 
+              <Route element={<ProtectedLayout />}>
+                <Route path="/admin" element={<AdminDashboard />} />
+              </Route>
+            </Route>
+          </Route>
+          </Routes>
+        </AuthProvider>
+      </BrowserRouter>
+    </HelmetProvider>
+  </StrictMode>,
+)
