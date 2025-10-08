@@ -30,3 +30,10 @@ async function destinations(req, res, next) {
 }
 
 module.exports = { statistics, successStories, destinations };
+// add currency rates endpoint
+module.exports.rates = async function rates(req, res, next) {
+  try {
+    // Example static map; replace with real provider in production
+    return res.json({ rates: { USD: 0.0033, EUR: 0.0031, GBP: 0.0026, INR: 0.28 } });
+  } catch (err) { return next(err); }
+}

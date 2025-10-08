@@ -10,7 +10,7 @@ router.put('/:activityId', requireAuth, requireRole(['Farmer']), ctrl.updateActi
 router.delete('/:activityId', requireAuth, requireRole(['Farmer']), ctrl.deleteActivity);
 router.post('/:activityId/upload-images', requireAuth, requireRole(['Farmer']), ctrl.uploadMiddleware, ctrl.uploadActivityImages);
 router.put('/:activityId/availability', requireAuth, requireRole(['Farmer']), ctrl.updateAvailability);
-router.get('/categories', (req, res) => res.json([]));
-router.get('/tags/:categoryId', (req, res) => res.json([]));
+router.get('/categories', ctrl.listCategories);
+router.get('/tags/:categoryId', ctrl.listTags);
 
 module.exports = router;

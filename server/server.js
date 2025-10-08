@@ -1,4 +1,3 @@
-const path = require('path');
 // Load root .env then local .env (root preferred for monorepo setups)
 try { require('dotenv').config({ path: path.resolve(__dirname, '../.env') }); } catch (e) {}
 require('dotenv').config();

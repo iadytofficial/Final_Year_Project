@@ -9,5 +9,6 @@ router.get('/my-bookings', requireAuth, requireRole(['Tourist']), ctrl.myBooking
 router.put('/:bookingId/cancel', requireAuth, requireRole(['Tourist']), ctrl.cancelBooking);
 router.post('/:bookingId/cancel', requireAuth, requireRole(['Tourist']), ctrl.cancelBooking);
 router.post('/:bookingId/request-cancellation', requireAuth, requireRole(['Tourist']), ctrl.cancelBooking);
+router.put('/:bookingId/modify', requireAuth, requireRole(['Tourist']), ctrl.modifyBooking);
 
 module.exports = router;
