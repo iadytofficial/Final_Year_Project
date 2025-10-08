@@ -100,3 +100,23 @@ async function cancelBooking(req, res, next) {
 }
 
 module.exports = { checkAvailability, createBooking, myBookings, cancelBooking };
+module.exports.modifyBooking = async function modifyBooking(req, res, next) {
+  try {
+    const bookingId = req.params.bookingId;
+    const { ActivityDate, NumberOfParticipants } = req.body;
+    const booking = await Bookings.findOne({ _id: bookingId, TouristID: req.user.userId });
+    if (!booking) return res.status(404).json({ code: 'SYS001', message: 'Booking not found' });
+
+    const activity = await Activities.findById(booking.ActivityID);
+    const dateStr = dayjs(ActivityDate).format('YYYY-MM-DD');
+    if (!withinAdvanceWindow(activity, dateStr, booking.Slot)) return res.status(400).json({ code: 'BOOK002', message: 'Invalid date or lead time' });
+    const { remaining } = await computeRemaining(activity, dateStr, booking.Slot);
+    if (Number(NumberOfParticipants) > remaining) return res.status(409).json({ code: 'BOOK001', message: 'Slot unavailable' });
+
+    booking.ActivityDate = new Date(ActivityDate);
+    booking.NumberOfParticipants = Number(NumberOfParticipants);
+    booking.TotalCost = Number((booking.NumberOfParticipants * activity.PricePerPerson).toFixed(2));
+    await booking.save();
+    return res.json({ message: 'Modified', total: booking.TotalCost });
+  } catch (err) { return next(err); }
+}
