@@ -100,6 +100,28 @@ async function cancelBooking(req, res, next) {
 }
 
 module.exports = { checkAvailability, createBooking, myBookings, cancelBooking };
+module.exports.computeRemaining = computeRemaining;
+
+module.exports.modifyBooking = async function modifyBooking(req, res, next) {
+  try {
+    const Bookings = require('../models/Booking');
+    const activity = await Activities.findById(req.body.ActivityID || undefined) || await Activities.findById((await Bookings.findById(req.params.bookingId)).ActivityID);
+    const b = await Bookings.findOne({ _id: req.params.bookingId, TouristID: req.user.userId });
+    if (!b) return res.status(404).json({ code: 'SYS001', message: 'Booking not found' });
+    if (!activity || activity.Status !== 'Active') return res.status(404).json({ code: 'SYS001', message: 'Activity not found' });
+    const dateStr = new Date(req.body.ActivityDate).toISOString().slice(0,10);
+    const { withinAdvanceWindow } = require('../utils/bookingRules');
+    if (!withinAdvanceWindow(activity, dateStr, b.Slot)) return res.status(400).json({ code: 'BOOK002', message: 'Invalid date or lead time' });
+    const { remaining } = await computeRemaining(activity, dateStr, b.Slot);
+    const newCount = Number(req.body.NumberOfParticipants);
+    if (newCount > remaining) return res.status(409).json({ code: 'BOOK001', message: 'Slot unavailable' });
+    b.ActivityDate = new Date(req.body.ActivityDate);
+    b.NumberOfParticipants = newCount;
+    b.TotalCost = Number((newCount * activity.PricePerPerson).toFixed(2));
+    await b.save();
+    return res.json({ message: 'Modification updated', total: b.TotalCost });
+  } catch (err) { return next(err); }
+}
 module.exports.modifyBooking = async function modifyBooking(req, res, next) {
   try {
     const bookingId = req.params.bookingId;
