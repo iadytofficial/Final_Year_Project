@@ -20,6 +20,9 @@ const SearchResults = lazy(()=>import('./pages/public/SearchResults.jsx'))
 const ActivityDetails = lazy(()=>import('./pages/public/ActivityDetails.jsx'))
 const Experiences = lazy(()=>import('./pages/public/Experiences.jsx'))
 const SuccessStories = lazy(()=>import('./pages/public/SuccessStories.jsx'))
+const SearchSuggestions = lazy(()=>import('./pages/search/Suggestions.jsx'))
+const SearchPopular = lazy(()=>import('./pages/search/Popular.jsx'))
+const SearchSaved = lazy(()=>import('./pages/search/Saved.jsx'))
 import MyBookings from './pages/tourist/MyBookings.jsx'
 import ReviewForm from './pages/tourist/ReviewForm.jsx'
 import MyReviews from './pages/tourist/MyReviews.jsx'
@@ -39,6 +42,8 @@ const Chat = lazy(()=>import('./pages/messages/Chat.jsx'))
 const NotificationsCenter = lazy(()=>import('./pages/notifications/NotificationsCenter.jsx'))
 const Favorites = lazy(()=>import('./pages/favorites/Favorites.jsx'))
 const AIAssistant = lazy(()=>import('./pages/ai/AIAssistant.jsx'))
+const AIAssistantTabs = lazy(()=>import('./pages/ai/AIAssistantTabs.jsx'))
+const PlantIdentify = lazy(()=>import('./pages/ai/PlantIdentify.jsx'))
 const AdminUsers = lazy(()=>import('./pages/admin/Users.jsx'))
 const Verifications = lazy(()=>import('./pages/admin/Verifications.jsx'))
 const ReviewsModeration = lazy(()=>import('./pages/admin/ReviewsModeration.jsx'))
@@ -70,6 +75,9 @@ createRoot(document.getElementById('root')).render(
             <Route path="reset-password/:token" element={<ResetPassword />} />
             <Route path="how-it-works" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><HowItWorks /></Suspense>} />
             <Route path="search" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><SearchResults /></Suspense>} />
+            <Route path="search/suggestions" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><SearchSuggestions /></Suspense>} />
+            <Route path="search/popular" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><SearchPopular /></Suspense>} />
+            <Route path="search/saved" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><SearchSaved /></Suspense>} />
             <Route path="experiences" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><Experiences /></Suspense>} />
             <Route path="experience/:id" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><ActivityDetails /></Suspense>} />
             <Route path="destinations" element={<PublicStats />} />
@@ -143,6 +151,8 @@ createRoot(document.getElementById('root')).render(
                 <Route path="notifications" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><NotificationsCenter /></Suspense>} />
                 <Route path="favorites" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><Favorites /></Suspense>} />
                 <Route path="ai" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><AIAssistant /></Suspense>} />
+                <Route path="ai/tabs" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><AIAssistantTabs /></Suspense>} />
+                <Route path="ai/identify" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><PlantIdentify /></Suspense>} />
               </Route>
             </Route>
           </Route>

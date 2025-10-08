@@ -6,6 +6,7 @@ import api from '../../services/api'
 import { useAuth } from '../../contexts/AuthContext'
 import RatingBreakdown from '../../components/common/RatingBreakdown'
 import ShareButtons from '../../components/common/ShareButtons'
+import { Helmet } from 'react-helmet-async'
 
 export default function ActivityDetails() {
   const { id } = useParams()
@@ -38,6 +39,16 @@ export default function ActivityDetails() {
   return (
     <PublicLayout>
       <div className="mx-auto max-w-5xl px-4 py-8">
+        <Helmet>
+          <script type="application/ld+json">{JSON.stringify({
+            '@context':'https://schema.org',
+            '@type':'TouristAttraction',
+            name: activity.CustomTitle,
+            description: activity.CustomDescription,
+            image: activity.Images?.[0],
+            aggregateRating: activity.Rating? { '@type':'AggregateRating', ratingValue: activity.Rating, reviewCount: activity.RatingCount||0 } : undefined,
+          })}</script>
+        </Helmet>
         <div className="grid gap-6 md:grid-cols-2">
           <img src={activity.Images?.[0]} alt={activity.CustomTitle} className="w-full rounded object-cover" />
           <div>
