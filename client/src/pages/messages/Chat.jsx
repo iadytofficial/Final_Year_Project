@@ -24,6 +24,7 @@ export default function Chat() {
   const send = async () => {
     if (!bookingId || !text) return
     await api.post('/messages/send', { bookingId, content: text })
+    try { await api.put(`/messages/${messages[messages.length-1]?.MessageID||''}/read`) } catch {}
     setText('')
   }
 
