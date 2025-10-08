@@ -1,6 +1,8 @@
 import ProtectedLayout from '../../components/common/ProtectedLayout'
 import { useEffect, useState } from 'react'
 import api from '../../services/api'
+import * as XLSX from 'xlsx'
+import jsPDF from 'jspdf'
 import { Line, Bar, Doughnut } from 'react-chartjs-2'
 import { Chart, LineElement, BarElement, PointElement, CategoryScale, LinearScale, Tooltip, Legend, ArcElement } from 'chart.js'
 
@@ -24,6 +26,18 @@ export default function Reports() {
     const url = window.URL.createObjectURL(new Blob([res.data]))
     const a = document.createElement('a'); a.href = url; a.download = filename; a.click(); window.URL.revokeObjectURL(url)
   }
+  const exportExcel = (rows, filename) => {
+    const ws = XLSX.utils.json_to_sheet(rows)
+    const wb = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(wb, ws, 'Data')
+    XLSX.writeFile(wb, filename)
+  }
+  const exportPdf = (rows, filename) => {
+    const doc = new jsPDF()
+    let y = 10
+    rows.slice(0,100).forEach((row)=>{ doc.text(JSON.stringify(row).slice(0,100), 10, y); y+=7; if (y>280){ doc.addPage(); y=10 } })
+    doc.save(filename)
+  }
 
   return (
     <ProtectedLayout>
@@ -34,6 +48,8 @@ export default function Reports() {
           <button onClick={()=>exportCsv('/export/earnings','earnings.csv')} className="rounded border px-3 py-1 text-sm">Export Earnings (CSV)</button>
           <button onClick={()=>exportCsv('/export/users','users.csv')} className="rounded border px-3 py-1 text-sm">Export Users (CSV)</button>
           <button onClick={()=>exportCsv('/export/reviews','reviews.csv')} className="rounded border px-3 py-1 text-sm">Export Reviews (CSV)</button>
+          <button onClick={()=>exportExcel(revenue,'revenue.xlsx')} className="rounded border px-3 py-1 text-sm">Export Revenue (Excel)</button>
+          <button onClick={()=>exportPdf(revenue,'revenue.pdf')} className="rounded border px-3 py-1 text-sm">Export Revenue (PDF)</button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="rounded border bg-white p-4"><h2 className="mb-2 font-medium">Revenue</h2><Line data={revData} height={220} /></div>
