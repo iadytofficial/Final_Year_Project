@@ -58,6 +58,7 @@ const PublicStats = lazy(()=>import('./pages/public/PublicStats.jsx'))
 const ActivityEdit = lazy(()=>import('./pages/farmer/ActivityEdit.jsx'))
 const CategoryTagManager = lazy(()=>import('./pages/admin/CategoryTagManager.jsx'))
 const Promotions = lazy(()=>import('./pages/admin/Promotions.jsx'))
+const AdminBookings = lazy(()=>import('./pages/admin/Bookings.jsx'))
 import About from './pages/static/About.jsx'
 import Terms from './pages/static/Terms.jsx'
 import Privacy from './pages/static/Privacy.jsx'
@@ -150,6 +151,7 @@ createRoot(document.getElementById('root')).render(
                 <Route path="/admin/reports" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><Reports /></Suspense>} />
                 <Route path="/admin/categories" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><CategoryTagManager /></Suspense>} />
                 <Route path="/admin/promotions" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><Promotions /></Suspense>} />
+                <Route path="/admin/bookings" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><AdminBookings /></Suspense>} />
               </Route>
             </Route>
             {/* Shared */}
