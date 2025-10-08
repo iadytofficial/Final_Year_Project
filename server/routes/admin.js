@@ -6,6 +6,7 @@ const Bookings = require('../models/Booking');
 const ActivityCategories = require('../models/ActivityCategories');
 const ActivityTags = require('../models/ActivityTags');
 const Promotions = require('../models/Promotion');
+const AuditLogs = require('../models/AuditLog');
 
 router.use(requireAuth, requireRole(['Administrator']));
 
@@ -27,7 +28,13 @@ router.get('/bookings', async (req, res, next) => {
   try { const items = await Bookings.find({}).sort({ BookingDate: -1 }).limit(500); return res.json({ items }); } catch (e) { return next(e); }
 });
 router.put('/bookings/:id/status', async (req, res, next) => {
-  try { await Bookings.updateOne({ _id: req.params.id }, { $set: { Status: req.body.status } }); return res.json({ message: 'OK' }); } catch (e) { return next(e); }
+  try {
+    const before = await Bookings.findById(req.params.id).lean();
+    await Bookings.updateOne({ _id: req.params.id }, { $set: { Status: req.body.status } });
+    const after = await Bookings.findById(req.params.id).lean();
+    await AuditLogs.create({ UserID: req.user.userId, Action: 'AdminSetBookingStatus', EntityType: 'Booking', EntityID: req.params.id, OldValue: { Status: before?.Status }, NewValue: { Status: after?.Status } });
+    return res.json({ message: 'OK' });
+  } catch (e) { return next(e); }
 });
 
 // Categories & Tags create

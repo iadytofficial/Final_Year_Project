@@ -122,6 +122,8 @@ module.exports.modifyBooking = async function modifyBooking(req, res, next) {
     return res.json({ message: 'Modification updated', total: b.TotalCost });
   } catch (err) { return next(err); }
 }
+
+// Legacy stub removed and replaced by validated modifyBooking above
 module.exports.modifyBooking = async function modifyBooking(req, res, next) {
   try {
     const bookingId = req.params.bookingId;
