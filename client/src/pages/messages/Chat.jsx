@@ -53,7 +53,10 @@ export default function Chat() {
         </div>
         <div className="h-80 overflow-y-auto rounded border bg-white p-3">
           {messages.map((m, i) => (
-            <div key={i} className="mb-2 text-sm"><span className="font-medium">{m.senderName||m.SenderID?.FullName||m.SenderID}:</span> {m.Content||m.content}</div>
+            <div key={i} className="mb-2 text-sm">
+              <span className="font-medium">{m.senderName||m.SenderID?.FullName||m.SenderID}:</span> {m.Content||m.content}
+              {i===messages.length-1 && m.IsRead && (<span className="ml-2 text-xs text-gray-500">Seen</span>)}
+            </div>
           ))}
           <div ref={endRef} />
         </div>
