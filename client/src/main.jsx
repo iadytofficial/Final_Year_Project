@@ -15,6 +15,7 @@ import ProtectedLayout from './components/common/ProtectedLayout.jsx'
 const AdminDashboard = lazy(()=>import('./pages/admin/AdminDashboard.jsx'))
 const BookingWizard = lazy(()=>import('./pages/tourist/BookingFlow/BookingWizard.jsx'))
 import { HelmetProvider } from 'react-helmet-async'
+import { CurrencyProvider } from './contexts/CurrencyContext.jsx'
 const HowItWorks = lazy(()=>import('./pages/public/HowItWorks.jsx'))
 const SearchResults = lazy(()=>import('./pages/public/SearchResults.jsx'))
 const ActivityDetails = lazy(()=>import('./pages/public/ActivityDetails.jsx'))
@@ -26,6 +27,7 @@ const SearchSaved = lazy(()=>import('./pages/search/Saved.jsx'))
 import MyBookings from './pages/tourist/MyBookings.jsx'
 import ReviewForm from './pages/tourist/ReviewForm.jsx'
 import MyReviews from './pages/tourist/MyReviews.jsx'
+import BookingDetail from './pages/tourist/BookingDetail.jsx'
 const FarmerDashboard = lazy(()=>import('./pages/farmer/FarmerDashboard.jsx'))
 const FarmRegistration = lazy(()=>import('./pages/farmer/FarmRegistration.jsx'))
 const FarmManage = lazy(()=>import('./pages/farmer/FarmManage.jsx'))
@@ -35,9 +37,11 @@ const GuideDashboard = lazy(()=>import('./pages/provider/guide/GuideDashboard.js
 const GuideRequests = lazy(()=>import('./pages/provider/guide/GuideRequests.jsx'))
 const GuideAvailability = lazy(()=>import('./pages/provider/guide/GuideAvailability.jsx'))
 const GuideEarnings = lazy(()=>import('./pages/provider/guide/EarningsOverview.jsx'))
+const GuideRegistration = lazy(()=>import('./pages/provider/guide/GuideRegistration.jsx'))
 const TransportDashboard = lazy(()=>import('./pages/provider/transport/TransportDashboard.jsx'))
 const TransportRequests = lazy(()=>import('./pages/provider/transport/TransportRequests.jsx'))
 const TransportEarnings = lazy(()=>import('./pages/provider/transport/EarningsOverview.jsx'))
+const TransportRegistration = lazy(()=>import('./pages/provider/transport/TransportRegistration.jsx'))
 const Chat = lazy(()=>import('./pages/messages/Chat.jsx'))
 const NotificationsCenter = lazy(()=>import('./pages/notifications/NotificationsCenter.jsx'))
 const Favorites = lazy(()=>import('./pages/favorites/Favorites.jsx'))
@@ -65,6 +69,7 @@ createRoot(document.getElementById('root')).render(
     <HelmetProvider>
       <BrowserRouter>
         <AuthProvider>
+          <CurrencyProvider>
           <Routes>
           <Route path="/" element={<App />}> 
             <Route index element={<Home />} />
@@ -94,6 +99,7 @@ createRoot(document.getElementById('root')).render(
                 <Route path="dashboard" element={<div className="p-6">Tourist Dashboard</div>} />
                 <Route path="bookings/new" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><BookingWizard /></Suspense>} />
                 <Route path="bookings" element={<MyBookings />} />
+                <Route path="bookings/:id" element={<BookingDetail />} />
                 <Route path="reviews" element={<MyReviews />} />
                 <Route path="reviews/new" element={<ReviewForm />} />
               </Route>
@@ -117,6 +123,7 @@ createRoot(document.getElementById('root')).render(
                 <Route path="guide/dashboard" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><GuideDashboard /></Suspense>} />
                 <Route path="guide/requests" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><GuideRequests /></Suspense>} />
                 <Route path="guide/calendar" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><GuideAvailability /></Suspense>} />
+                <Route path="guide/profile" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><GuideRegistration /></Suspense>} />
                 <Route path="guide/earnings" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><GuideEarnings /></Suspense>} />
               </Route>
             </Route>
@@ -127,6 +134,7 @@ createRoot(document.getElementById('root')).render(
                 <Route path="transport/dashboard" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><TransportDashboard /></Suspense>} />
                 <Route path="transport/requests" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><TransportRequests /></Suspense>} />
                 <Route path="transport/earnings" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><TransportEarnings /></Suspense>} />
+                <Route path="transport/profile" element={<Suspense fallback={<div className='p-6'>Loading…</div>}><TransportRegistration /></Suspense>} />
               </Route>
             </Route>
 
@@ -157,6 +165,7 @@ createRoot(document.getElementById('root')).render(
             </Route>
           </Route>
           </Routes>
+          </CurrencyProvider>
         </AuthProvider>
       </BrowserRouter>
     </HelmetProvider>
