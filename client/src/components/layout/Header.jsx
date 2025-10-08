@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import NotificationBell from '../common/NotificationBell'
+import CurrencySelector from './CurrencySelector'
 
 export default function Header() {
   const { user, logout } = useAuth()
@@ -12,6 +13,7 @@ export default function Header() {
           <Link to="/search" className="hover:text-brand">Search</Link>
           <Link to="/experiences" className="hover:text-brand">Experiences</Link>
           <Link to="/destinations" className="hover:text-brand">Destinations</Link>
+          <CurrencySelector />
           {user && <Link to="/notifications" className="hover:text-brand"><NotificationBell /></Link>}
           {user ? (
             <>

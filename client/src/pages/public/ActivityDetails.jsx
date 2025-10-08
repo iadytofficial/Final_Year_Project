@@ -4,6 +4,7 @@ import PublicLayout from './PublicLayout'
 import RatingStars from '../../components/common/RatingStars'
 import api from '../../services/api'
 import { useAuth } from '../../contexts/AuthContext'
+import Price from '../../components/common/Price'
 import RatingBreakdown from '../../components/common/RatingBreakdown'
 import ShareButtons from '../../components/common/ShareButtons'
 import { Helmet } from 'react-helmet-async'
@@ -56,7 +57,7 @@ export default function ActivityDetails() {
             <div className="mt-2"><RatingStars value={activity.Rating || 0} /></div>
             <p className="mt-4 text-gray-700 whitespace-pre-line">{activity.CustomDescription}</p>
             <div className="mt-6 flex items-center justify-between">
-              <span className="text-xl font-semibold text-brand">LKR {activity.PricePerPerson?.toLocaleString?.() || activity.PricePerPerson}</span>
+              <span className="text-xl font-semibold text-brand"><Price amountLkr={activity.PricePerPerson} /></span>
               <Link to="/bookings/new" className="rounded bg-brand px-4 py-2 text-white">Book now</Link>
             </div>
             <div className="mt-3 flex items-center justify-between">
