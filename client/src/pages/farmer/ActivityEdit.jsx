@@ -5,6 +5,7 @@ import api from '../../services/api'
 import { toast } from 'react-toastify'
 import AvailabilityEditor from '../../components/availability/AvailabilityEditor'
 import ImagesManager from '../images/ImagesManager'
+import ImageUploadWithAlt from '../../components/common/ImageUploadWithAlt'
 
 export default function ActivityEdit() {
   const { id } = useParams()
@@ -36,6 +37,9 @@ export default function ActivityEdit() {
             </div>
             <div className="pt-4">
               <h2 className="text-lg font-semibold mb-2">Images</h2>
+              <div className="mb-3">
+                <ImageUploadWithAlt entityType="Activity" entityId={id} uploadPath={`/activities/${id}/upload-images`} />
+              </div>
               <ImagesManager entityType="Activity" entityId={id} />
             </div>
           </div>
