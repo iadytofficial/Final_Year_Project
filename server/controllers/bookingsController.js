@@ -104,13 +104,15 @@ module.exports.computeRemaining = computeRemaining;
 
 module.exports.modifyBooking = async function modifyBooking(req, res, next) {
   try {
-    const Bookings = require('../models/Booking');
-    const activity = await Activities.findById(req.body.ActivityID || undefined) || await Activities.findById((await Bookings.findById(req.params.bookingId)).ActivityID);
+    const activityForBooking = async (bookingId) => {
+      const bk = await Bookings.findById(bookingId);
+      return await Activities.findById(bk.ActivityID);
+    };
+    const activity = req.body.ActivityID ? await Activities.findById(req.body.ActivityID) : await activityForBooking(req.params.bookingId);
     const b = await Bookings.findOne({ _id: req.params.bookingId, TouristID: req.user.userId });
     if (!b) return res.status(404).json({ code: 'SYS001', message: 'Booking not found' });
     if (!activity || activity.Status !== 'Active') return res.status(404).json({ code: 'SYS001', message: 'Activity not found' });
-    const dateStr = new Date(req.body.ActivityDate).toISOString().slice(0,10);
-    const { withinAdvanceWindow } = require('../utils/bookingRules');
+    const dateStr = dayjs(req.body.ActivityDate).format('YYYY-MM-DD');
     if (!withinAdvanceWindow(activity, dateStr, b.Slot)) return res.status(400).json({ code: 'BOOK002', message: 'Invalid date or lead time' });
     const { remaining } = await computeRemaining(activity, dateStr, b.Slot);
     const newCount = Number(req.body.NumberOfParticipants);
@@ -120,27 +122,5 @@ module.exports.modifyBooking = async function modifyBooking(req, res, next) {
     b.TotalCost = Number((newCount * activity.PricePerPerson).toFixed(2));
     await b.save();
     return res.json({ message: 'Modification updated', total: b.TotalCost });
-  } catch (err) { return next(err); }
-}
-
-// Legacy stub removed and replaced by validated modifyBooking above
-module.exports.modifyBooking = async function modifyBooking(req, res, next) {
-  try {
-    const bookingId = req.params.bookingId;
-    const { ActivityDate, NumberOfParticipants } = req.body;
-    const booking = await Bookings.findOne({ _id: bookingId, TouristID: req.user.userId });
-    if (!booking) return res.status(404).json({ code: 'SYS001', message: 'Booking not found' });
-
-    const activity = await Activities.findById(booking.ActivityID);
-    const dateStr = dayjs(ActivityDate).format('YYYY-MM-DD');
-    if (!withinAdvanceWindow(activity, dateStr, booking.Slot)) return res.status(400).json({ code: 'BOOK002', message: 'Invalid date or lead time' });
-    const { remaining } = await computeRemaining(activity, dateStr, booking.Slot);
-    if (Number(NumberOfParticipants) > remaining) return res.status(409).json({ code: 'BOOK001', message: 'Slot unavailable' });
-
-    booking.ActivityDate = new Date(ActivityDate);
-    booking.NumberOfParticipants = Number(NumberOfParticipants);
-    booking.TotalCost = Number((booking.NumberOfParticipants * activity.PricePerPerson).toFixed(2));
-    await booking.save();
-    return res.json({ message: 'Modified', total: booking.TotalCost });
   } catch (err) { return next(err); }
 }
