@@ -1,6 +1,8 @@
 const Activities = require('../models/Activity');
 const Farms = require('../models/Farm');
 const Images = require('../models/Image');
+const ActivityCategories = require('../models/ActivityCategories');
+const ActivityTags = require('../models/ActivityTags');
 const { upload, scanFile, processImage, uploadsBaseUrl } = require('../utils/uploads');
 const { createActivitySchema, updateActivitySchema, availabilitySchema } = require('../validators/activityValidators');
 
@@ -110,4 +112,10 @@ module.exports = {
   uploadActivityImages,
   updateAvailability,
   uploadMiddleware: upload.array('images', 10),
+  listCategories: async (req, res, next) => {
+    try { const items = await ActivityCategories.find({ IsActive: true }).sort({ CategoryName: 1 }); return res.json(items); } catch (e) { return next(e); }
+  },
+  listTags: async (req, res, next) => {
+    try { const items = await ActivityTags.find({ CategoryID: req.params.categoryId, IsActive: true }).sort({ TagName: 1 }); return res.json(items); } catch (e) { return next(e); }
+  },
 };
