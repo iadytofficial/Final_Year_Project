@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import ProtectedLayout from '../../components/common/ProtectedLayout'
 import api from '../../services/api'
 import { toast } from 'react-toastify'
+import { Link } from 'react-router-dom'
 
 export default function BookingDetail(){
   const { id } = useParams()
@@ -28,7 +29,8 @@ export default function BookingDetail(){
           <p><span className="font-medium">Total:</span> LKR {booking.TotalCost?.toLocaleString?.()||booking.TotalCost}</p>
           <p><span className="font-medium">Status:</span> {booking.Status}</p>
         </div>
-        <div className="mt-4 flex gap-2">
+        <div className="mt-4 flex flex-wrap gap-2">
+          <Link to={`/bookings/${id}/modify`} className="rounded border px-3 py-1">Modify</Link>
           <button onClick={requestCancellation} className="rounded border px-3 py-1">Request Cancellation</button>
           <button onClick={cancel} className="rounded border px-3 py-1">Cancel</button>
         </div>

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import RatingStars from './RatingStars'
+import Price from './Price'
 
 export default function ActivityCard({ activity }) {
   return (
@@ -9,7 +10,7 @@ export default function ActivityCard({ activity }) {
         <h3 className="truncate font-medium">{activity.CustomTitle}</h3>
         <div className="mt-1 flex items-center justify-between text-sm text-gray-600">
           <RatingStars value={activity.Rating || 0} />
-          <span className="font-semibold text-brand">LKR {activity.PricePerPerson?.toLocaleString?.() || activity.PricePerPerson}</span>
+          <span className="font-semibold text-brand"><Price amountLkr={activity.PricePerPerson} /></span>
         </div>
       </div>
     </Link>
